@@ -1,6 +1,6 @@
 ```bash
 $ interactive -A <project> --reservation=lsda -n1 -t0-1
-$ jupyter_cartopy_server <node_id> # node_id, e.g.: n1
+$ jupyter_cartopy_server <node_id_numbner> # node_id_number, e.g.: 12 for node = n12
 ```
 
 ```bash
