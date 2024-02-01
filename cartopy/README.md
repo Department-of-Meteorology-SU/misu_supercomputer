@@ -1,3 +1,5 @@
+Place scripts in bash path (I have `~/bin` in my path and have the scripts there).
+
 ```bash
 interactive -A <project> --reservation=lsda -n1 -t0-1
 jupyter_cartopy_server <node_id_numbner> # node_id_number, e.g.: 12 for node = n12
