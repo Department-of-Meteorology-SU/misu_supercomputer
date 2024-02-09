@@ -5,6 +5,7 @@ mamba create -y -n py09_cartopy -c conda-forge \
     python=3.9 `# cartopy conflicts with python > 3.9` \
     jupyter \
     dynaconf \
+    dask \
     netcdf4 \
     numpy \
     scipy \
