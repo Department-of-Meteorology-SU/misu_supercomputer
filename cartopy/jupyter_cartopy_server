@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Usage examples
+# jupyter_cartopy_server 5
+# jupyter_cartopy_server -d path/to/dir 3
+# jupyter_cartopy_server 2 -p -d path/to/dir
+
 poetry=false
 numeric_args=()
 target_dir=""
