@@ -1,12 +1,46 @@
 #!/bin/bash
 
-if [ $# -eq 1 ]; then
-    if [[ $1 =~ ^[0-9]+$ ]]; then
-        module load Mambaforge/23.3.1-1-hpc1 > /dev/null 2>&1
-        ~/.conda/envs/py09_cartopy/bin/jupyter notebook --no-browser --ip=n$1
-    else
-        echo "Argument is not a number."
-    fi
+poetry=false
+numeric_args=()
+target_dir=""
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -p|--poetry)
+            poetry=true
+            ;;
+        -d|--dir)
+            shift
+            target_dir="$1"
+            ;;
+        [0-9]*)
+            if [[ ! $1 =~ ^[0-9]+$ ]]; then
+                echo "Invalid numeric argument: $1"
+                exit 1
+            fi
+            numeric_args+=("$1")
+            ;;
+        *)
+            echo "Invalid option: $1"
+            exit 1
+            ;;
+    esac
+    shift
+done
+
+if [ ${#numeric_args[@]} -ne 1 ]; then
+    echo "Please provide exactly one numeric argument."
+    exit 1
+fi
+numeric_arg="${numeric_args[0]}"
+
+if [ -n "$target_dir" ]; then
+    cd "$target_dir"
+fi
+
+if [ "$poetry" = true ]; then
+    ~/.local/bin/poetry run jupyter notebook --no-browser --ip=n$numeric_arg
 else
-    echo "Please provide exactly one argument."
+    module load Mambaforge/23.3.1-1-hpc1 > /dev/null 2>&1
+    ~/.conda/envs/py09_cartopy/bin/jupyter notebook --no-browser --ip=n$numeric_arg
 fi
