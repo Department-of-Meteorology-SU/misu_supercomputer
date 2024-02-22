@@ -43,6 +43,8 @@ if [ ${#numeric_args[@]} -ne 1 ]; then
     echo "If you like to start a jupyter server, please provide exactly one numeric argument."
     echo "This argument will be used to specify the node number, e.g. n2."
     echo ""
+    echo "If no argument is given, this help text is displayed."
+    echo ""
     echo "You furthermore can specify the following options:"
     echo "  -d, --dir: Change to the specified directory before starting the server."
     echo "  -p, --poetry: Use poetry to start the server."
