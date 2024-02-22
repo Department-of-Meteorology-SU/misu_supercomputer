@@ -1,0 +1,80 @@
+#!/bin/bash
+
+poetry=false
+silent=false
+numeric_args=()
+target_dir=""
+poetry=~/.local/bin/poetry
+jupyter=~/.conda/envs/py09_cartopy/bin/jupyter
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -p|--poetry)
+            poetry=true
+            ;;
+        -s|--silent)
+            silent=true
+            ;;
+        -d|--dir)
+            shift
+            target_dir="$1"
+            ;;
+        -j|--jupyter)
+            shift
+            jupyter="$1"
+            ;;
+        [0-9]*)
+            if [[ ! $1 =~ ^[0-9]+$ ]]; then
+                echo "Invalid numeric argument: $1"
+                exit 1
+            fi
+            numeric_args+=("$1")
+            ;;
+        *)
+            echo "Invalid option: $1"
+            exit 1
+            ;;
+    esac
+    shift
+done
+
+if [ ${#numeric_args[@]} -ne 1 ]; then
+    echo "---------------------------------"
+    echo "If you like to start a jupyter server, please provide exactly one numeric argument."
+    echo "This argument will be used to specify the node number, e.g. n2."
+    echo ""
+    echo "You furthermore can specify the following options:"
+    echo "  -d, --dir: Change to the specified directory before starting the server."
+    echo "  -p, --poetry: Use poetry to start the server."
+    echo "  -s, --silent: Do not print any output."
+    echo "  -j, --jupyer: Change the path to the jupyter executable."
+    echo ""
+    echo "Example: jupyter_server 2"
+    echo "Example: jupyter_server 1 --dir path/to/root/dir --poetry --silent"
+    echo "Example: jupyter_server 10 --jupyter ~/.conda/envs/myenv/bin/jupyter"
+    echo "---------------------------------"
+    module load Mambaforge/23.3.1-1-hpc1 > /dev/null 2>&1
+    $jupyter notebook list
+    exit 0
+fi
+numeric_arg="${numeric_args[0]}"
+
+if [ -n "$target_dir" ]; then
+    cd "$target_dir"
+fi
+
+if [ "$poetry" = true ]; then
+    if [ "$silent" = true ]; then
+        $poetry run jupyter notebook --no-browser --ip=n$numeric_arg > /dev/null 2>&1
+    else
+        $poetry run jupyter notebook --no-browser --ip=n$numeric_arg
+    fi
+else
+    if [ "$silent" = true ]; then
+        module load Mambaforge/23.3.1-1-hpc1 > /dev/null 2>&1
+        $jupyter notebook --no-browser --ip=n$numeric_arg > /dev/null 2>&1
+    else
+        module load Mambaforge/23.3.1-1-hpc1
+        $jupyter notebook --no-browser --ip=n$numeric_arg
+    fi
+fi
