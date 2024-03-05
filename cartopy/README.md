@@ -2,9 +2,8 @@ Place scripts in bash path (I have `~/bin` in my path and have the scripts there
 
 ```bash
 interactive -A <project> --reservation=lsda -n4 -t0-1
-jupyter_cartopy_server <node_id_number> & # node_id_number, e.g.: 12 for node = n12
-jupyter_cartopy_running
->>> [...]
+jupyter_server <node_id_number> --silent & # node_id_number, e.g.: 12 for node = n12
+jupyter_server --silent
 >>> Currently running servers:
 >>> http://<node>:8888/?token=<token> :: /proj/bolinc/users/<path>
 ```
@@ -18,8 +17,7 @@ squeue -u $USER
 
 jobsh -j <pid> <node>
 
-jupyter_cartopy_running
->>> [...]
+jupyter_server --silent
 >>> Currently running servers:
 >>> http://<node>:8888/?token=<token> :: /proj/bolinc/users/<path>
 ```
