@@ -5,6 +5,7 @@ name=x_ezrei
 sshkey=~/.ssh/tetralith_id_ed25519
 
 # could be changed if another local direcotry name is desired
+# on macOS the mount directory is /Volumnes and you can use /Volumes/bolinc as mount point
 mntpoint=/mnt/bolinc
 
 # could be changed if another remote directory is desired
