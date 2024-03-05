@@ -6,11 +6,13 @@ numeric_args=()
 target_dir=""
 poetry_path=~/.local/bin/poetry
 jupyter_path=~/.conda/envs/py09_cartopy/bin/jupyter
+conda_module="Mambaforge/23.3.1-1-hpc1"
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         -p|--poetry)
             poetry=true
+            jupyter_path="$poetry_path run jupyter"
             ;;
         -s|--silent)
             silent=true
@@ -38,6 +40,18 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
+if [ "$silent" = true ]; then
+    silent=" > /dev/null 2>&1"
+else
+    silent=""
+fi
+if [ "$poetry" = false ]; then
+    module load $conda_module $silent
+fi
+if [ -n "$target_dir" ]; then
+    cd "$target_dir"
+fi
+
 if [ ${#numeric_args[@]} -ne 1 ]; then
     if [ "$silent" = false ]; then
         echo "---------------------------------"
@@ -57,28 +71,9 @@ if [ ${#numeric_args[@]} -ne 1 ]; then
         echo "Example: jupyter_server 10 --jupyter ~/.conda/envs/myenv/bin/jupyter"
         echo "---------------------------------"
     fi
-    module load Mambaforge/23.3.1-1-hpc1 > /dev/null 2>&1
     $jupyter_path notebook list
     exit 0
 fi
 numeric_arg="${numeric_args[0]}"
 
-if [ -n "$target_dir" ]; then
-    cd "$target_dir"
-fi
-
-if [ "$poetry" = true ]; then
-    if [ "$silent" = true ]; then
-        $poetry_path run jupyter notebook --no-browser --ip=n$numeric_arg > /dev/null 2>&1
-    else
-        $poetry_path run jupyter notebook --no-browser --ip=n$numeric_arg
-    fi
-else
-    if [ "$silent" = true ]; then
-        module load Mambaforge/23.3.1-1-hpc1 > /dev/null 2>&1
-        $jupyter_path notebook --no-browser --ip=n$numeric_arg > /dev/null 2>&1
-    else
-        module load Mambaforge/23.3.1-1-hpc1
-        $jupyter_path notebook --no-browser --ip=n$numeric_arg
-    fi
-fi
+$jupyter_path notebook --no-browser --ip=n$numeric_arg $silent
