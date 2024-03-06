@@ -5,14 +5,14 @@ silent=false
 numeric_args=()
 target_dir=""
 poetry_path=~/.local/bin/poetry
-jupyter_path=~/.conda/envs/py09_cartopy/bin/jupyter
+jupyter_executable=~/.conda/envs/py09_cartopy/bin/jupyter
 conda_module="Mambaforge/23.3.1-1-hpc1"
 
 while [[ $# -gt 0 ]]; do
     case "$1" in
         -p|--poetry)
             poetry=true
-            jupyter_path="$poetry_path run jupyter"
+            jupyter_executable="$poetry_path run jupyter"
             ;;
         -s|--silent)
             silent=true
@@ -23,7 +23,7 @@ while [[ $# -gt 0 ]]; do
             ;;
         -j|--jupyter)
             shift
-            jupyter_path="$1"
+            jupyter_executable="$1"
             ;;
         [0-9]*)
             if [[ ! $1 =~ ^[0-9]+$ ]]; then
@@ -79,9 +79,9 @@ Example: jupyter_server 10 --jupyter ~/.conda/envs/myenv/bin/jupyter
 ---------------------------------
 EOF
     fi
-    $jupyter_path notebook list
+    $jupyter_executable notebook list
     exit 0
 fi
 numeric_arg="${numeric_args[0]}"
 
-silent_command "$jupyter_path notebook --no-browser --ip=n$numeric_arg" "$silent"
+silent_command "$jupyter_executable notebook --no-browser --ip=n$numeric_arg" "$silent"
