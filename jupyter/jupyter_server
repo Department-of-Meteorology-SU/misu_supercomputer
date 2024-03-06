@@ -61,7 +61,7 @@ fi
 if [ ${#numeric_args[@]} -ne 1 ]; then
     if [ "$silent" = false ]; then
         cat <<EOF
----------------------------------"
+---------------------------------
 If you like to start a jupyter server, please provide exactly one numeric argument.
 This argument will be used to specify the node number, e.g. n2.
 
@@ -76,7 +76,7 @@ You furthermore can specify the following options:
 Example: jupyter_server 2
 Example: jupyter_server 1 --dir path/to/root/dir --poetry --silent
 Example: jupyter_server 10 --jupyter ~/.conda/envs/myenv/bin/jupyter
----------------------------------"
+---------------------------------
 EOF
     fi
     $jupyter_path notebook list
