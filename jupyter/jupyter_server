@@ -40,13 +40,19 @@ while [[ $# -gt 0 ]]; do
     shift
 done
 
-if [ "$silent" = true ]; then
-    silent=" > /dev/null 2>&1"
-else
-    silent=""
-fi
+function silent_command {
+    local command="$1"
+    local silent_flag="$2"
+
+    if [ "$silent_flag" = true ]; then
+        "$command" > /dev/null 2>&1
+    else
+        "$command"
+    fi
+}
+
 if [ "$poetry" = false ]; then
-    module load $conda_module $silent
+    silent_command "module load $conda_module" "$silent"
 fi
 if [ -n "$target_dir" ]; then
     cd "$target_dir"
@@ -76,4 +82,4 @@ if [ ${#numeric_args[@]} -ne 1 ]; then
 fi
 numeric_arg="${numeric_args[0]}"
 
-$jupyter_path notebook --no-browser --ip=n$numeric_arg $silent
+silent_command "$jupyter_path notebook --no-browser --ip=n$numeric_arg" "$silent"
