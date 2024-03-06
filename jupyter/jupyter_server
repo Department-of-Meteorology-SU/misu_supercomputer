@@ -60,22 +60,24 @@ fi
 
 if [ ${#numeric_args[@]} -ne 1 ]; then
     if [ "$silent" = false ]; then
-        echo "---------------------------------"
-        echo "If you like to start a jupyter server, please provide exactly one numeric argument."
-        echo "This argument will be used to specify the node number, e.g. n2."
-        echo ""
-        echo "If no argument is given, this help text is displayed."
-        echo ""
-        echo "You furthermore can specify the following options:"
-        echo "  -d, --dir: Change to the specified directory before starting the server."
-        echo "  -p, --poetry: Use poetry to start the server."
-        echo "  -s, --silent: Do not print any output."
-        echo "  -j, --jupyer: Change the path to the jupyter executable."
-        echo ""
-        echo "Example: jupyter_server 2"
-        echo "Example: jupyter_server 1 --dir path/to/root/dir --poetry --silent"
-        echo "Example: jupyter_server 10 --jupyter ~/.conda/envs/myenv/bin/jupyter"
-        echo "---------------------------------"
+        cat <<EOF
+---------------------------------"
+If you like to start a jupyter server, please provide exactly one numeric argument.
+This argument will be used to specify the node number, e.g. n2.
+
+If no argument is given, this help text is displayed.
+
+You furthermore can specify the following options:
+    -d, --dir: Change to the specified directory before starting the server.
+    -p, --poetry: Use poetry to start the server.
+    -s, --silent: Do not print any output.
+    -j, --jupyer: Change the path to the jupyter executable.
+
+Example: jupyter_server 2
+Example: jupyter_server 1 --dir path/to/root/dir --poetry --silent
+Example: jupyter_server 10 --jupyter ~/.conda/envs/myenv/bin/jupyter
+---------------------------------"
+EOF
     fi
     $jupyter_path notebook list
     exit 0
