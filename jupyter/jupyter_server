@@ -45,9 +45,9 @@ function silent_command {
     local silent_flag="$2"
 
     if [ "$silent_flag" = true ]; then
-        "$command" > /dev/null 2>&1
+        $command > /dev/null 2>&1
     else
-        "$command"
+        $command
     fi
 }
 
